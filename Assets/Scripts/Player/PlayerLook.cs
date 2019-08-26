@@ -4,20 +4,27 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
-    public float minimumY = -60f;
-    public float maximumY = 60f;
+    [SerializeField] public float sensitivity = 4.0f;
+    [SerializeField] public float smoothing = 2.0f;
 
-    private float mouseX = 0f;
-    private float mouseY = 0f;
+    private float minimumX = -60f;
+    private float maximumX = 60f;
 
-    public float sensitivity = 8f;
+    private GameObject player;
 
-    [SerializeField] private Transform playerBody;
+    private Vector2 mouseLook;
+    private Vector2 smoothV;
+
+    // Start is called before the first frame update
+    void Awake()
+    {
+        LockCursor();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        LockCursor();
+        player = this.transform.parent.gameObject;
     }
 
     // Update is called once per frame
@@ -26,28 +33,25 @@ public class PlayerLook : MonoBehaviour
         MouseMovement();
     }
 
-    //Lets you look around the world like a boss!
-    void MouseMovement()
-    {
-        mouseX = Input.GetAxis("Mouse X") * sensitivity;
-        mouseY = Input.GetAxis("Mouse Y") * sensitivity;
-
-        //should clamp the camera when looking up or down at determined angles, but isn't working :S
-        //mouseY = Mathf.Clamp(mouseY, minimumY, maximumY);
-
-        //rotates the player with the camera so forward movement is always in the direction the camera is facing
-        transform.Rotate(Vector3.left * mouseY);
-        playerBody.Rotate(Vector3.up * mouseX);
-
-        if(mouseX > 60)
-        {
-            //maybe this will work for clamping?
-        }
-    }
-
     private void LockCursor()
     {
         //Locks the mouse cursor to the center of the screen
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    //Lets you look around the world like a boss!
+    void MouseMovement()
+    {
+        var md = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+        md = Vector2.Scale(md, new Vector2(sensitivity * smoothing, sensitivity * smoothing));
+
+        smoothV.x = Mathf.Lerp(smoothV.x, md.x, 1f / smoothing);
+        smoothV.y = Mathf.Lerp(smoothV.y, md.y, 1f / smoothing);
+
+        mouseLook += smoothV;
+        mouseLook.y = Mathf.Clamp(mouseLook.y, minimumX, maximumX);
+
+        transform.localRotation = Quaternion.AngleAxis(-mouseLook.y, Vector3.right);
+        player.transform.localRotation = Quaternion.AngleAxis(mouseLook.x, player.transform.up);
     }
 }
