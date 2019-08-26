@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Key
+  tags:
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -16,6 +18,11 @@ TagManager:
   - 
   - Character
   - Interactive
+  - Present
+  - Past
+  - Future
+  - 
+  - 
   - 
   - 
   - 
