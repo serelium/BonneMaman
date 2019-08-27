@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
 
     private CapsuleCollider col;
 
+    // temp variable to handle hallway trap; better implementation needed
+    [HideInInspector]
+    public bool stop = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -33,11 +37,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayerMove()
     {
-        //Grabs the user's input on the vertical axis and horizontal axis.
-        moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        if (!stop)
+        {
+            //Grabs the user's input on the vertical axis and horizontal axis.
+            moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+            moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 
-        transform.Translate(moveHorizontal, 0, moveVertical);
+            transform.Translate(moveHorizontal, 0, moveVertical);
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+        }
     }
 
     private void Jump()
