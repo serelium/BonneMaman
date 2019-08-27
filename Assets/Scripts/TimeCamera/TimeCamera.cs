@@ -7,18 +7,31 @@ using UnityEngine.UI;
 
 public class TimeCamera : MonoBehaviour
 {
+    [Header("Time Cameras")]
     [SerializeField] private Camera displayCamera;
     [SerializeField] private Camera presentCamera;
     [SerializeField] private Camera pastCamera;
     [SerializeField] private Camera futureCamera;
-    [SerializeField] private Image camFlashImage;
-    [SerializeField] private TextMesh selectedTimelineText;
+
+    [Header("Time Camera 3D Models")]
     [SerializeField] private GameObject cameraModel;
     [SerializeField] private GameObject timelineSwitch;
 
+    [Header("UI")]
+    [SerializeField] private Image camFlashImage;
+    [SerializeField] private TextMesh selectedTimelineText;
+
     private Dictionary<CameraType, Camera> cameras;
     private CameraType currentCameraType;
-    private bool active;
+    public bool Active { get; set; }
+    public LayerMask CurrentLayerMask => displayCamera.cullingMask;
+    public int CurrentLayer => LayerMask.NameToLayer(currentCameraType.ToString());
+
+    public delegate void ChangingDimensionEvent();
+    public event ChangingDimensionEvent ChangingDimension;
+
+    public delegate void ChangedDimensionEvent();
+    public event ChangedDimensionEvent ChangedDimension;
 
     private void Awake()
     {
@@ -36,7 +49,8 @@ public class TimeCamera : MonoBehaviour
         Shader.SetGlobalTexture("_TimeView", presentCamera.targetTexture);
         displayCamera.cullingMask = LayerMask.GetMask(currentCameraType.ToString());
 
-        SetActive(false);
+        Active = false;
+        cameraModel.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -48,51 +62,19 @@ public class TimeCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha1))
-        {
-            SwapCamera(CameraType.Past);
-        }
-
-        else if (Input.GetKey(KeyCode.Alpha2))
-        {
-            SwapCamera(CameraType.Present);
-        }
-
-        else if (Input.GetKey(KeyCode.Alpha3))
-        {
-            SwapCamera(CameraType.Future);
-        }
-
-        else if (Input.GetKey(KeyCode.Mouse0))
-        {
-            ChangeDimension();
-        }
-
-        else if(Input.GetKeyDown(KeyCode.Q))
-        {
-            SetActive(!active);
-        }
-
-        else if(Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            SetZoom(true);
-        }
-
-        else if(Input.GetKeyUp(KeyCode.Mouse1))
-        {
-            SetZoom(false);
-        }
+        
     }
     
     public void SetActive(bool active)
     {
-        this.active = active;
+        AudioManager.Instance.Play(gameObject, "Camera_Activate");
+        Active = active;
         cameraModel.SetActive(active);
     }
 
     public void SetZoom(bool zoom)
     {
-        if (!active)
+        if (!Active)
             return;
 
         Vector3 translation = zoom ? new Vector3(0, 0, 0.02f) : new Vector3(0, 0, -0.02f);
@@ -101,7 +83,7 @@ public class TimeCamera : MonoBehaviour
 
     public void SwapCamera(CameraType cameraType)
     {
-        if (!active || currentCameraType == cameraType)
+        if (!Active || currentCameraType == cameraType)
             return;
 
         currentCameraType = cameraType;
@@ -122,7 +104,7 @@ public class TimeCamera : MonoBehaviour
 
     public void ChangeDimension()
     {
-        if (!active)
+        if (!Active)
             return;
 
         int layerMask = LayerMask.GetMask(currentCameraType.ToString());
@@ -130,33 +112,24 @@ public class TimeCamera : MonoBehaviour
         if (displayCamera.cullingMask == layerMask)
             return;
 
+        ChangingDimension?.Invoke();
         StartCoroutine(FlashCamera());
 
         displayCamera.cullingMask = layerMask;
         int layer = LayerMask.NameToLayer(currentCameraType.ToString());
         gameObject.layer = layer;
 
-        SetChildLayerRecursivly(transform, layer);
-    }
-
-    private void SetChildLayerRecursivly(Transform transform, int layer)
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.childCount > 0)
-                SetChildLayerRecursivly(child, layer);
-
-            child.gameObject.layer = layer;
-        }
+        LayerUtils.SetChildLayerRecursivly(transform, layer);
     }
 
     private IEnumerator FlashCamera()
     {
+        AudioManager.Instance.Play(gameObject, "Camera_Flash");
         camFlashImage.color = Color.white;
 
         yield return new WaitForSeconds(1);
 
-        float duration = 2;
+        float duration = 1.5f;
         float time = 0;
 
         Color startCol = camFlashImage.color;
@@ -171,10 +144,13 @@ public class TimeCamera : MonoBehaviour
 
             yield return null;
         }
+
+        ChangedDimension?.Invoke();
     }
 
     private IEnumerator TurnSwitch()
     {
+        AudioManager.Instance.Play(gameObject, "Camera_Scroll");
         float duration = 0.3f;
         float time = 0;
 
