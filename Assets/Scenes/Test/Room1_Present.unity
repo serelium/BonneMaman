@@ -402,8 +402,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineWidth: 1.1
-  canHold: 1
-  isHolding: 0
 --- !u!54 &675180659
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -773,10 +771,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8774240205175431271, guid: 79d09859d40f16c4c8e1b0a00453ebc3,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1909415116, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
       propertyPath: camFlashImage
       value: 
       objectReference: {fileID: 28731367}
+    - target: {fileID: 527344995, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 527344995, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 527344996, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
+      propertyPath: m_FontSize
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 371892316387123777, guid: 79d09859d40f16c4c8e1b0a00453ebc3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
 --- !u!1 &990072626
