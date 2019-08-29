@@ -661,6 +661,7 @@ MonoBehaviour:
     scrollVector: {x: 0.0603, y: 0}
   - gameObject: {fileID: 1995332701}
     scrollVector: {x: 0, y: 2.828}
+  stopDirection: {x: 0, y: 0, z: 1}
 --- !u!1 &716398792
 GameObject:
   m_ObjectHideFlags: 0

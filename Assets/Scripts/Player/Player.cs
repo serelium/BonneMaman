@@ -5,9 +5,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float interactRayLength = 20.0f;
-    [SerializeField] private bool useTimeCamera;
     [SerializeField] private TimeCamera timeCamera;
     [SerializeField] private Transform holdPoint;
+    public bool useTimeCamera;
 
     public Transform HoldPoint => holdPoint;
     public TimeCamera TimeCamera => timeCamera;

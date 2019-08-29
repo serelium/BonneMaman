@@ -30,21 +30,21 @@ public class Interact : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, rayLength, layerMask))
         {
-            Interactable interactable = (Interactable) hit.collider.gameObject.GetComponent(typeof(Interactable));
+            Interactable interactable = (Interactable)hit.collider.gameObject.GetComponent(typeof(Interactable));
 
             if (interactable != null)
             {
                 if (currentInteractable && currentInteractable != interactable)
                     currentInteractable.Unhighlight();
 
-                if(currentInteractable != interactable)
+                if (currentInteractable != interactable)
                 {
                     currentInteractable = interactable;
                     currentInteractable.Highlight();
                 }
             }
 
-            else if(currentInteractable)
+            else if (currentInteractable)
             {
                 currentInteractable.Unhighlight();
                 currentInteractable = null;
