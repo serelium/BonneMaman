@@ -17,9 +17,9 @@ public class PlayerMovement : MonoBehaviour
 
     private CapsuleCollider col;
 
-    // temp variable to handle hallway trap; better implementation needed
+    //variables to handle hallway trap
     [HideInInspector]
-    public bool stop = false;
+    public Vector3 directionToStop = new Vector3(0.0f, 0.0f, 0.0f);
 
     void Awake()
     {
@@ -37,18 +37,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayerMove()
     {
-        if (!stop)
-        {
-            //Grabs the user's input on the vertical axis and horizontal axis.
-            moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-            moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        //Grabs the user's input on the vertical axis and horizontal axis.
+        moveVertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        moveHorizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 
-            transform.Translate(moveHorizontal, 0, moveVertical);
-        }
-        else
+        Vector3 playerMovement = new Vector3(moveHorizontal, 0, moveVertical);
+
+        // if we're trapped in a hallway, restrict movement in one direction
+        if ( directionToStop != Vector3.zero )
         {
-            rb.velocity = Vector3.zero;
+            Vector3 localDir = transform.InverseTransformVector(directionToStop);
+            if ( Vector3.Dot( playerMovement, localDir) > 0)
+            {
+                playerMovement = playerMovement - Vector3.Project(playerMovement, localDir);
+            }
         }
+
+        transform.Translate(playerMovement);
     }
 
     private void Jump()
