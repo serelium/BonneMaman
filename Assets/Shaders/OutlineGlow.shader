@@ -3,9 +3,10 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Color", Color) = (0,0,0,0)
+        _Color ("Color", Color) = (1,1,1,1)
 		_OutlineColor("Outline Color", Color) = (1,1,1,1)
 		_OutlineWidth("Outline Width", Range(0.1,10.0)) = 1.1
+		_Glossiness("Glossiness", Float) = 32
     }
     SubShader
     {
@@ -21,6 +22,7 @@
 			Name "OUTLINE"
 
 			ZWrite Off
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -52,7 +54,6 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				// sample the texture
 				return _OutlineColor;
 			}
 			ENDCG
@@ -84,14 +85,17 @@
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+				float4 normal : NORMAL;
 				fixed3 diff : COLOR0;
 				fixed3 ambient : COLOR1;
+				float specular : TEXCOORD2;
 				SHADOW_COORDS(1)
             };
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Color;
+			float _Glossiness;
 
             v2f vert (appdata v)
             {
@@ -102,18 +106,26 @@
 				half nl = max(0, dot(worldNormal, _WorldSpaceLightPos0.xyz));
 				o.diff = nl * _LightColor0.rgb;
 				o.ambient = ShadeSH9(half4(worldNormal, 1));
+
+				float3 viewDir = WorldSpaceViewDir(v.vertex);
+				float3 halfVector = normalize(_WorldSpaceLightPos0 + viewDir);
+				float NdotH = dot(v.normal, halfVector);
+
+				float specularIntensity = pow(NdotH * nl, _Glossiness * _Glossiness);
+
 				TRANSFER_SHADOW(o)
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
+
                 fixed4 col = tex2D(_MainTex, i.uv);
 				fixed shadow = SHADOW_ATTENUATION(i);
 				fixed3 lighting = i.diff * shadow + i.ambient;
 				col.rgb *= lighting;
 
-                return col;
+                return saturate(col * _Color + i.specular);
             }
             ENDCG
         }

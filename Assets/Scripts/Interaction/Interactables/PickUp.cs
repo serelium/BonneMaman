@@ -31,7 +31,6 @@ public class PickUp : Interactable
             interactor.CanInteract = true;
             isHolding = false;
             rb.useGravity = true;
-            //rb.isKinematic = false;
             transform.parent = null;
             interactor = null;
             collider.isTrigger = false;
@@ -45,11 +44,7 @@ public class PickUp : Interactable
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(isHolding && interactor)
-        {
-            interactor.RigidBody.velocity = Vector3.zero;
-            interactor.RigidBody.angularVelocity = Vector3.zero;
-        }
+
     }
 
     private IEnumerator Pickup(Player interactor)
@@ -60,7 +55,6 @@ public class PickUp : Interactable
         isHolding = true;
         transform.parent = interactor.HoldPoint.transform;
         rb.useGravity = false;
-        //rb.isKinematic = true;
         collider.isTrigger = true;
         this.interactor = interactor;
         transform.localPosition = new Vector3(0, 0, 0);
