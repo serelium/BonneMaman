@@ -67,7 +67,8 @@ public class TimeCamera : MonoBehaviour
     
     public void SetActive(bool active)
     {
-        AudioManager.Instance.Play(gameObject, "Camera_Activate");
+        //TODO: Fix AudioManager issue
+        //AudioManager.Instance.Play(gameObject, "Camera_Activate");
         Active = active;
         cameraModel.SetActive(active);
     }
