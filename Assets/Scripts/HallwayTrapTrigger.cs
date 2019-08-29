@@ -16,6 +16,8 @@ public class HallwayTrapTrigger : MonoBehaviour
     // The walls that will be scrolling and which way they should scroll
     [SerializeField] private HallwayTrapPlane[] hallwayPlanes;
 
+    public Vector3 stopDirection;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,13 @@ public class HallwayTrapTrigger : MonoBehaviour
     {
         if( other.tag == "Player")
         {
-            other.GetComponent<PlayerMovement>().stop = true;
+            other.GetComponent<PlayerMovement>().directionToStop = stopDirection;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if( other.tag == "Player" ){
+            other.GetComponent<PlayerMovement>().directionToStop = Vector3.zero;
         }
     }
 
