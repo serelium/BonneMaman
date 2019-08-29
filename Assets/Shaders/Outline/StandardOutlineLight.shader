@@ -1,7 +1,7 @@
 ﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "BonneMaman/StandardOutline"
+Shader "BonneMaman/StandardOutlineLight"
 {
 	Properties
 	{
@@ -15,7 +15,9 @@ Shader "BonneMaman/StandardOutline"
 		_BumpAmount("Distortion Amount", Range(0,128)) = 10
 		_DistortTex("Distortion Texture", 2D) = "white" {}
 
-		_Color("Color", Color) = (1,1,1,1)
+		[HDR] _ColorOnLight("Color On Light", Color) = (0,0,1,0)
+
+		_Color("Color", Color) = (0,1,1,1)
 		_MainTex("Albedo", 2D) = "white" {}
 
 		_Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
@@ -113,13 +115,15 @@ Shader "BonneMaman/StandardOutline"
 
 			ENDCG
 		}
+
+			GrabPass { }
 			// ------------------------------------------------------------------
 			//  Additive forward pass (one light per pass)
 			Pass
 			{
 				Name "FORWARD_DELTA"
 				Tags { "LightMode" = "ForwardAdd" }
-				Blend[_SrcBlend] One
+				Blend[_SrcBlend] Zero
 				Fog { Color(0,0,0,0) } // in additive pass fog should be black
 				ZWrite Off
 				ZTest LEqual
@@ -144,7 +148,12 @@ Shader "BonneMaman/StandardOutline"
 
 			#pragma vertex vertAdd
 			#pragma fragment fragAdd
-			#include "UnityStandardCoreForward.cginc"
+
+			float4 _ColorOnLight;
+			sampler2D _GrabTexture;
+			float _GrabTexture_TexelSize;
+
+			#include "../CustomPipeline/CustomUnityStandardCoreForward.cginc"
 
 			ENDCG
 		}
@@ -361,5 +370,5 @@ Shader "BonneMaman/StandardOutline"
 		}
 
 		FallBack "VertexLit"
-		CustomEditor "CustomStandardShaderGUI"
+		//CustomEditor "CustomStandardShaderGUI"
 }

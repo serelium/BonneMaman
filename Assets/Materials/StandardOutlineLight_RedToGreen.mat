@@ -7,15 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StandardOutline
-  m_Shader: {fileID: 4800000, guid: 1b4c59ef1233de0409840e201aa87079, type: 3}
+  m_Name: StandardOutlineLight_RedToGreen
+  m_Shader: {fileID: 4800000, guid: 5ff75ee2edb98884e8faccb01e190904, type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -83,8 +82,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0, g: 0.41509432, b: 0.011859812, a: 1}
-    - _ColorOnLight: {r: 2.297397, g: 2.1262183, b: 0, a: 1}
+    - _Color: {r: 0.028681517, g: 1, b: 0, a: 1}
+    - _ColorOnLight: {r: 0.13518448, g: 0.28968105, b: 3.6886053, a: 1}
     - _DistorColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0.9837489, g: 1, b: 0, a: 1}

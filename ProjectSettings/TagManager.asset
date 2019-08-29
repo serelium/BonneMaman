@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Key
-  tags:
-  - Ground
+  - CameraPickUp
+  - FutureLensePickUp
   layers:
   - Default
   - TransparentFX
@@ -21,11 +21,6 @@ TagManager:
   - Present
   - Past
   - Future
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
