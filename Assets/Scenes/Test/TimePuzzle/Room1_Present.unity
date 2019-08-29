@@ -386,11 +386,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-<<<<<<< HEAD:Assets/Scenes/Test/TimePuzzle/Room1_Present.unity
   m_RootOrder: 7
-=======
-  m_RootOrder: 4
->>>>>>> dev:Assets/Scenes/Test/Room1_Present.unity
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &675180658
 MonoBehaviour:
@@ -889,6 +885,10 @@ PrefabInstance:
       propertyPath: camFlashImage
       value: 
       objectReference: {fileID: 28731367}
+    - target: {fileID: 1909415116, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
+      propertyPath: camFlashImage
+      value: 
+      objectReference: {fileID: 28731367}
     - target: {fileID: 371892316387123777, guid: 79d09859d40f16c4c8e1b0a00453ebc3,
         type: 3}
       propertyPath: m_IsActive
@@ -949,7 +949,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-<<<<<<< HEAD:Assets/Scenes/Test/TimePuzzle/Room1_Present.unity
     - target: {fileID: 8774240205175431193, guid: 79d09859d40f16c4c8e1b0a00453ebc3,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -975,17 +974,6 @@ PrefabInstance:
       propertyPath: sensitivity
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1909415116, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
-      propertyPath: camFlashImage
-      value: 
-      objectReference: {fileID: 28731367}
-=======
-    - target: {fileID: 8774240205412296799, guid: 79d09859d40f16c4c8e1b0a00453ebc3,
-        type: 3}
-      propertyPath: layerMask.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
->>>>>>> dev:Assets/Scenes/Test/Room1_Present.unity
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79d09859d40f16c4c8e1b0a00453ebc3, type: 3}
 --- !u!1 &990072626
@@ -1784,7 +1772,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2062430650}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.12, y: 1.59, z: -17.597}
+  m_LocalPosition: {x: 4.273, y: 1.59, z: -17.597}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1882,7 +1870,6 @@ Transform:
   m_Father: {fileID: 925099162}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
-<<<<<<< HEAD:Assets/Scenes/Test/TimePuzzle/Room1_Present.unity
 --- !u!1001 &4920634212901172582
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1933,7 +1920,7 @@ PrefabInstance:
     - target: {fileID: 4920634212244156907, guid: 0b39293db5b75ed4f935feff81c60a69,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4920634212244156907, guid: 0b39293db5b75ed4f935feff81c60a69,
         type: 3}
@@ -1952,5 +1939,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b39293db5b75ed4f935feff81c60a69, type: 3}
-=======
->>>>>>> dev:Assets/Scenes/Test/Room1_Present.unity
