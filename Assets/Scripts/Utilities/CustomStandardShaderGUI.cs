@@ -1,4 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
+﻿/*// Decompiled with JetBrains decompiler
 // Type: UnityEditor.StandardShaderGUI
 // Assembly: UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 // MVID: 01B28312-B6F5-4E06-90F6-BE297B711E41
@@ -355,4 +355,4 @@ namespace UnityEditor
             public static readonly string[] blendNames = Enum.GetNames(typeof(CustomStandardShaderGUI.BlendMode));
         }
     }
-}
+}*/

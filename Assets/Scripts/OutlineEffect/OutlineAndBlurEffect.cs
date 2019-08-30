@@ -18,7 +18,7 @@ public class OutlineAndBlurEffect : MonoBehaviour
 
 	void OnRenderImage(RenderTexture src, RenderTexture dst)
 	{
-		outlineAndBlurMat.SetFloat("_Intensity", Intensity); // Set the intensity of the outline
+		outlineAndBlurMat?.SetFloat("_Intensity", Intensity); // Set the intensity of the outline
         Graphics.Blit(src, dst, outlineAndBlurMat, 0); // Copy the result to the main display camera
 	}
 }

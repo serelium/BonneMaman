@@ -6,30 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Levels/Room1.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/Levels/Corridor.unity
-    guid: 7ea4e753573195d4d97adbe7b26a296e
-  - enabled: 1
-    path: Assets/Scenes/Levels/Room2.unity
-    guid: 396f3be802e548e4d9519ee015876f6d
-  - enabled: 1
     path: Assets/Scenes/Test/TimePuzzle/Room1_Present.unity
-    guid: f71398b2eab56c6448caa5f0f0e00966
+    guid: 35aea5fd656eb5b479dba8f05d693cd1
   - enabled: 1
     path: Assets/Scenes/Test/TimePuzzle/Room1_Past.unity
     guid: 60f51ff68e952cc40abd200d9ab664a2
   - enabled: 1
     path: Assets/Scenes/Test/TimePuzzle/Room1_Future.unity
     guid: 12532083bd664b44f84ec07810fea91d
-  - enabled: 1
-    path: Assets/Scenes/Test/Time_Puzzle_Present.unity
-    guid: 3b04aad3569240d49a9e3a4bbd965243
-  - enabled: 1
-    path: Assets/Scenes/Test/Time_Puzzle_Past.unity
-    guid: 1f76c76075582404c9dba5361a7a00c3
-  - enabled: 1
-    path: Assets/Scenes/Test/Time_Puzzle_Future.unity
-    guid: 1cb8015bf6b8e0d4f93168a965a7ae04
+  - enabled: 0
+    path: Assets/Scenes/Levels/Room1.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/Levels/Corridor.unity
+    guid: 7ea4e753573195d4d97adbe7b26a296e
+  - enabled: 0
+    path: Assets/Scenes/Levels/Room2.unity
+    guid: 396f3be802e548e4d9519ee015876f6d
   m_configObjects: {}

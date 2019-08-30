@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 public class OutlinePrePass : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class OutlinePrePass : MonoBehaviour
 	{
         outlinePass = new RenderTexture(Screen.width, Screen.height, 24); // Outline texture pass
 		outlinePass.antiAliasing = QualitySettings.antiAliasing;
-		blurredPass = new RenderTexture(Screen.width >> 1, Screen.height >> 1, 0); // Blur texture pass (blur of outline pass)
+		blurredPass = new RenderTexture(Screen.width, Screen.height, 0); // Blur texture pass (blur of outline pass)
 
         Camera camera = GetComponent<Camera>();
 		Shader outlineShader = Shader.Find("Hidden/OutlineReplace");
