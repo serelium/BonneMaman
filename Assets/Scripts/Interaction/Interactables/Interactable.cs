@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    [SerializeField] private float outlineWidth;
+    [SerializeField] private Color outlineColor;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +24,15 @@ public abstract class Interactable : MonoBehaviour
     public void Highlight()
     {
         Material mat = GetComponent<MeshRenderer>().material;
-        mat.SetFloat("_OutlineWidth", outlineWidth);
+        mat.SetColor("_OutlineColor", outlineColor);
     }
 
     public void Unhighlight()
     {
         Material mat = GetComponent<MeshRenderer>().material;
-        mat.SetFloat("_OutlineWidth", 0);
+
+        // Setting the outline to a black color will result in having an "invisible" outline
+        // since we add the color to the rendered texture as a post effect and black = (0, 0, 0)
+        mat.SetColor("_OutlineColor", Color.black);
     }
 }

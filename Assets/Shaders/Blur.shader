@@ -1,148 +1,101 @@
-﻿Shader "BonneMaman/Blur"
+﻿Shader "Hidden/Blur"
 {
-    Properties
-    {
-		_Intensity("Blur Intensity", Range(0.0,1.0)) = 0.5
-		_BlurRadius("Blur Radius", Range(0.0,20.0)) = 1
-    }
+	Properties
+	{
+		_MainTex ("Texture", 2D) = "white" {}
+	}
+	SubShader
+	{
+		Cull Off ZWrite Off ZTest Always
 
-    SubShader
-    {
-		Tags
-		{
-			"Queue" = "Transparent"
-		}
-
-		GrabPass{}
-
+		// Horizontal Blur
 		Pass
 		{
-			Name "HORIZONTALBLUR"
-
-			ZWrite Off
-			
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-
+			
 			#include "UnityCG.cginc"
+
+			struct appdata
+			{
+				float4 vertex : POSITION;
+				float2 uv : TEXCOORD0;
+			};
 
 			struct v2f
 			{
 				float4 vertex : SV_POSITION;
-				float4 uvgrab : TEXCOORD0;
+				float2 uv : TEXCOORD0;
 			};
 
-			float _BlurRadius;
-			float _Intensity;
-			sampler2D _GrabTexture;
-			float4 _GrabTexture_TexelSize;
-
-			v2f vert(appdata_base v)
+			v2f vert (appdata v)
 			{
 				v2f o;
-
-				v.vertex *= 1.1;
 				o.vertex = UnityObjectToClipPos(v.vertex);
-
-				#if UNITY_UV_STARTS_AT_TOP
-					float scale = -1;
-				#else
-					float scale = 1;
-				#endif
-
-				o.uvgrab.xy = (float2(o.vertex.x, o.vertex.y * scale) + o.vertex.w) * 0.5;
-				o.uvgrab.zw = o.vertex.zw;
+				o.uv = v.uv;
 				return o;
 			}
+			
+			sampler2D _MainTex;
+			float2 _BlurSize;
 
-			half4 frag(v2f i) : COLOR
+			fixed4 frag (v2f i) : SV_Target
 			{
-				half4 texcol = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab));
-				half4 texsum = half4(0, 0, 0, 0);
+				fixed4 s = tex2D(_MainTex, i.uv) * 0.38774;
+				s += tex2D(_MainTex, i.uv + float2(_BlurSize.x * 2, 0)) * 0.06136;
+				s += tex2D(_MainTex, i.uv + float2(_BlurSize.x, 0)) * 0.24477;
+				s += tex2D(_MainTex, i.uv + float2(_BlurSize.x * -1, 0)) * 0.24477;
+				s += tex2D(_MainTex, i.uv + float2(_BlurSize.x * -2, 0)) * 0.06136;
 
-				#define GRABPIXEL(weight, kernalx) tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(float4(i.uvgrab.x + _GrabTexture_TexelSize.x * kernalx * _BlurRadius, i.uvgrab.y, i.uvgrab.z, i.uvgrab.w))) * weight
-
-				texsum += GRABPIXEL(0.05, -4.0);
-				texsum += GRABPIXEL(0.09, -3.0);
-				texsum += GRABPIXEL(0.12, -2.0);
-				texsum += GRABPIXEL(0.15, -1.0);
-				texsum += GRABPIXEL(0.18, -0.0);
-				texsum += GRABPIXEL(0.15, 1.0);
-				texsum += GRABPIXEL(0.12, 2.0);
-				texsum += GRABPIXEL(0.09, 3.0);
-				texsum += GRABPIXEL(0.05, 4.0);
-
-				texcol = lerp(texcol, texsum, _Intensity);
-				return texcol;
+				return s;
 			}
 			ENDCG
 		}
 
-		GrabPass{}
+		// Vertical Blur
+		Pass
+		{
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "UnityCG.cginc"
 
-        Pass
-        {
-			Name "VERTICALBLUR"
-
-			ZWrite Off
-
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-
-            #include "UnityCG.cginc"
-
-            struct v2f
-            {
-				float4 vertex : SV_POSITION;
-				float4 uvgrab : TEXCOORD0;
-            };
-
-			float _BlurRadius;
-			float _Intensity;
-			sampler2D _GrabTexture;
-			float4 _GrabTexture_TexelSize;
-
-			v2f vert(appdata_base v)
+			struct appdata
 			{
-				v.vertex *= 1.1;
+				float4 vertex : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			v2f vert (appdata v)
+			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
-
-				#if UNITY_UV_STARTS_AT_TOP
-					float scale = -1;
-				#else
-					float scale = 1;
-				#endif
-
-				o.uvgrab.xy = (float2(o.vertex.x, o.vertex.y * scale) + o.vertex.w) * 0.5;
-				o.uvgrab.zw = o.vertex.zw;
-
+				o.uv = v.uv;
 				return o;
 			}
+			
+			sampler2D _MainTex;
+			float2 _BlurSize;
 
-			half4 frag(v2f i) : COLOR
+			fixed4 frag (v2f i) : SV_Target
 			{
-				half4 texcol = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab));
-				half4 texsum = half4(0, 0, 0, 0);
+				fixed4 s = tex2D(_MainTex, i.uv) * 0.38774;
+				s += tex2D(_MainTex, i.uv + float2(0, _BlurSize.y * 2)) * 0.06136;
+				s += tex2D(_MainTex, i.uv + float2(0, _BlurSize.y)) * 0.24477;			
+				s += tex2D(_MainTex, i.uv + float2(0, _BlurSize.y * -1)) * 0.24477;
+				s += tex2D(_MainTex, i.uv + float2(0, _BlurSize.y * -2)) * 0.06136;
 
-				#define GRABPIXEL(weight, kernaly) tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(float4(i.uvgrab.x, i.uvgrab.y + _GrabTexture_TexelSize.y * kernaly * _BlurRadius, i.uvgrab.z,  i.uvgrab.w))) * weight
-
-				texsum += GRABPIXEL(0.05, -4.0);
-				texsum += GRABPIXEL(0.09, -3.0);
-				texsum += GRABPIXEL(0.12, -2.0);
-				texsum += GRABPIXEL(0.15, -1.0);
-				texsum += GRABPIXEL(0.18, -0.0);
-				texsum += GRABPIXEL(0.15, 1.0);
-				texsum += GRABPIXEL(0.12, 2.0);
-				texsum += GRABPIXEL(0.09, 3.0);
-				texsum += GRABPIXEL(0.05, 4.0);
-
-				texcol = lerp(texcol, texsum, _Intensity);
-				return texcol;
+				return s;
 			}
-            ENDCG
-        }
-    }
+			ENDCG
+		}
+	}
 }

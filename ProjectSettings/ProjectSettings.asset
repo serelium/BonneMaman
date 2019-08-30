@@ -639,10 +639,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: a557b946-bc53-4019-b9c1-5c1ed0a8cf28
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: BonneMaman
+  organizationId: serelium
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

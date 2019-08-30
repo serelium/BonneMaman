@@ -6,11 +6,6 @@ public class PickUp : Interactable
 {
     //public Transform HoldItem;
 
-    float throwForce = 500;
-    Vector3 objectPos;
-    float distance;
-
-    public bool canHold = true;
     public bool isHolding = false;
 
     private Rigidbody rb;
