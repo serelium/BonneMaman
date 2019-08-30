@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         if ( directionToStop != Vector3.zero )
         {
             Vector3 localDir = transform.InverseTransformVector(directionToStop);
-            if ( Vector3.Dot( playerMovement, localDir) > 0)
+            if (Vector3.Dot( playerMovement, localDir) > 0)
             {
                 playerMovement = playerMovement - Vector3.Project(playerMovement, localDir);
             }
