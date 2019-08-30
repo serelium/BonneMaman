@@ -23,6 +23,8 @@ public class TimeCamera : MonoBehaviour
 
     private Dictionary<CameraType, Camera> cameras;
     private CameraType currentCameraType;
+    private Dictionary<CameraType, bool> activeLenses;
+
     public bool Active { get; set; }
     public LayerMask CurrentLayerMask => displayCamera.cullingMask;
     public int CurrentLayer => LayerMask.NameToLayer(currentCameraType.ToString());
@@ -40,10 +42,15 @@ public class TimeCamera : MonoBehaviour
         futureCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
 
         cameras = new Dictionary<CameraType, Camera>();
+        activeLenses = new Dictionary<CameraType, bool>();
 
         cameras.Add(CameraType.Present, presentCamera);
         cameras.Add(CameraType.Past, pastCamera);
         cameras.Add(CameraType.Future, futureCamera);
+
+        activeLenses.Add(CameraType.Present, true);
+        activeLenses.Add(CameraType.Past, true);
+        activeLenses.Add(CameraType.Future, true);
 
         currentCameraType = CameraType.Present;
         Shader.SetGlobalTexture("_TimeView", presentCamera.targetTexture);
@@ -85,7 +92,7 @@ public class TimeCamera : MonoBehaviour
 
     public void SwapCamera(CameraType cameraType)
     {
-        if (!Active || currentCameraType == cameraType)
+        if (!Active || currentCameraType == cameraType || !activeLenses[cameraType])
             return;
 
         currentCameraType = cameraType;
@@ -124,6 +131,11 @@ public class TimeCamera : MonoBehaviour
         LayerUtils.SetChildLayerRecursivly(transform, layer);
 
         SetActive(false, false);
+    }
+
+    public void SetLensActive(CameraType lensType, bool active)
+    {
+        activeLenses[lensType] = active;
     }
 
     private IEnumerator FlashCamera()
