@@ -65,9 +65,11 @@ public class TimeCamera : MonoBehaviour
         
     }
     
-    public void SetActive(bool active)
+    public void SetActive(bool active, bool playSound = true)
     {
-        AudioManager.Instance.Play(gameObject, "Camera_Activate");
+        if(playSound)
+            AudioManager.Instance.Play(gameObject, "Camera_Activate");
+
         Active = active;
         cameraModel.SetActive(active);
     }
@@ -120,6 +122,8 @@ public class TimeCamera : MonoBehaviour
         gameObject.layer = layer;
 
         LayerUtils.SetChildLayerRecursivly(transform, layer);
+
+        SetActive(false, false);
     }
 
     private IEnumerator FlashCamera()
