@@ -24,6 +24,7 @@ public class TimeCamera : MonoBehaviour
     private Dictionary<CameraType, Camera> cameras;
     private CameraType currentCameraType;
     private Dictionary<CameraType, bool> activeLenses;
+    private AudioSource recAudioSource;
 
     public bool Active { get; set; }
     public LayerMask CurrentLayerMask => displayCamera.cullingMask;
@@ -58,6 +59,9 @@ public class TimeCamera : MonoBehaviour
 
         Active = false;
         cameraModel.SetActive(false);
+
+        recAudioSource = GetComponent<AudioSource>();
+        recAudioSource.loop = true;
     }
 
     // Start is called before the first frame update
@@ -76,6 +80,11 @@ public class TimeCamera : MonoBehaviour
     {
         if(playSound)
             AudioManager.Instance.Play(gameObject, "Camera_Activate");
+
+        if(active)
+            recAudioSource.Play();
+        else
+            recAudioSource.Stop();
 
         Active = active;
         cameraModel.SetActive(active);
