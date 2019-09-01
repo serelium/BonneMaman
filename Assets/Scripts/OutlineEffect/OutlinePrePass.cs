@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 public class OutlinePrePass : MonoBehaviour
 {

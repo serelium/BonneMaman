@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = 1.0f;
 
     private Rigidbody rb;
+    private Animator animator;
 
     public LayerMask groundLayer;
 
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<CapsuleCollider>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -53,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        animator?.SetFloat("Speed", playerMovement.magnitude);
         transform.Translate(playerMovement);
     }
 
