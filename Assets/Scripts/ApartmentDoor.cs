@@ -64,11 +64,10 @@ public class ApartmentDoor : Interactable
             // Vector Lerp between the start and ending positions
             float t = time/Duration;
 
-            //Smoothly tilt a transform toward a target rotation
+            //! testing smoothly tilt a transform toward a target rotation for Z and X
             float tiltAroundZ = Input.GetAxis("Horizontal") * swingAngle;
             float tiltAroundX = Input.GetAxis("Vertical") * swingAngle;
 
-            //!_transform.position = Vector3.Lerp(startPos, endPos, SwingCurve.Evaluate(t));
             // Rotate the cube by converting the angles into a quaternion.
             Quaternion target = Quaternion.Euler(0, tiltAroundZ, 0);
 
