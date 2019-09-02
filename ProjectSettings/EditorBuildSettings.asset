@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Levels/BedroomApt-Future.unity
+    guid: f4de06e2693859248b6c151f18983043
+  - enabled: 1
+    path: Assets/Scenes/Levels/BedroomApt-Past.unity
+    guid: 91f3c5d27f1eb324993ced62731ba7cd
+  - enabled: 1
+    path: Assets/Scenes/Levels/BedroomApt-Present.unity
+    guid: 8427fdf09109a9a4d898ee9297c0284f
+  - enabled: 1
     path: Assets/Scenes/Test/TimePuzzle/Room1_Past.unity
     guid: 60f51ff68e952cc40abd200d9ab664a2
   - enabled: 1
