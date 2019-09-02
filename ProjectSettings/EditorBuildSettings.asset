@@ -6,17 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Levels/Room1.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/Levels/BedroomApt-Future.unity
+    guid: f4de06e2693859248b6c151f18983043
   - enabled: 1
-    path: Assets/Scenes/Levels/Corridor.unity
-    guid: 7ea4e753573195d4d97adbe7b26a296e
+    path: Assets/Scenes/Levels/BedroomApt-Past.unity
+    guid: 91f3c5d27f1eb324993ced62731ba7cd
   - enabled: 1
-    path: Assets/Scenes/Levels/Room2.unity
-    guid: 396f3be802e548e4d9519ee015876f6d
-  - enabled: 1
-    path: Assets/Scenes/Test/TimePuzzle/Room1_Present.unity
-    guid: f71398b2eab56c6448caa5f0f0e00966
+    path: Assets/Scenes/Levels/BedroomApt-Present.unity
+    guid: 8427fdf09109a9a4d898ee9297c0284f
   - enabled: 1
     path: Assets/Scenes/Test/TimePuzzle/Room1_Past.unity
     guid: 60f51ff68e952cc40abd200d9ab664a2
@@ -32,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Test/Time_Puzzle_Future.unity
     guid: 1cb8015bf6b8e0d4f93168a965a7ae04
+  - enabled: 1
+    path: Assets/Scenes/Test/Adam's test.unity
+    guid: 79ef13a3dfe84414ba0c59566eb223e0
   m_configObjects: {}

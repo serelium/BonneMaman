@@ -13,7 +13,7 @@ public class ItemEffects : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //rotates the item at a given speed
         transform.Rotate(0, rotationSpeed, 0);

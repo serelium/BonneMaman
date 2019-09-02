@@ -1,35 +1,42 @@
-﻿Shader "BonneMaman/OutlineGlow"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "BonneMaman/OutlineGlow"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
 		_OutlineColor("Outline Color", Color) = (1,1,1,1)
-		_OutlineWidth("Outline Width", Range(0.1,10.0)) = 1.1
+		_OutlineWidth("Outline Width", Range(0.0,10.0)) = 1.1
 		_Glossiness("Glossiness", Float) = 32
     }
     SubShader
     {
 		Tags
 		{
-			"LightMode" = "ForwardBase"
+			//"LightMode" = "ForwardBase"
 			"RenderType" = "Opaque"
-			"Queue" = "Transparent"
+			"DisableBatching" = "True"
+			//"Queue" = "Transparent"
 		}
 
 		Pass
 		{
 			Name "OUTLINE"
 
-			ZWrite Off
+			Cull Front
+			ZWrite On
 
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
+			#include "UnityCG.cginc"
+
 			struct appdata
 			{
 				float4 vertex : POSITION;
+				float4 normal : NORMAL;
 				float2 uv : TEXCOORD0;
 			};
 
@@ -44,10 +51,13 @@
 
 			v2f vert(appdata v)
 			{
-				v.vertex.xyz *= _OutlineWidth;
+				//v.normal.xyz = UnpackNormal(v.normal);
+				float3 normal = normalize(v.normal.xyz)*0.05;
+				v.vertex.xyz += normal * 0.1;
 
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
+
 				o.uv = v.uv;
 				return o;
 			}

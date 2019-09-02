@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float interactRayLength = 20.0f;
+    [SerializeField] private float interactRayLength = 1f;
     [SerializeField] private TimeCamera timeCamera;
     [SerializeField] private Transform holdPoint;
     public bool useTimeCamera;
@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
             return;
 
         //Simply shoots out a raycast that's visible in the Scene view
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * interactRayLength, Color.blue);
+        Debug.DrawLine(Camera.main.transform.position, Camera.main.transform.forward * interactRayLength, Color.blue);
         RaycastHit hit;
 
         LayerMask layerMask = TimeCamera.CurrentLayerMask;
