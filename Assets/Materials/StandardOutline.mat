@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StandardOutline
-  m_Shader: {fileID: 4800000, guid: 1b4c59ef1233de0409840e201aa87079, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
+  m_Shader: {fileID: 4800000, guid: f4105d66365a9a54488cf7d53c7f96a6, type: 3}
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -82,7 +82,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0, g: 0.41509432, b: 0.011859812, a: 1}
+    - _Color: {r: 0, g: 0.737545, b: 0.9811321, a: 1}
     - _ColorOnLight: {r: 2.297397, g: 2.1262183, b: 0, a: 1}
     - _DistorColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

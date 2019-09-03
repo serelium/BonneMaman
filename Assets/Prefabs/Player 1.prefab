@@ -316,7 +316,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 797741529}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.611, z: 0.838}
+  m_LocalPosition: {x: 0, y: -0.045, z: 0.838}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 157783391}
@@ -1341,8 +1341,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956515686196319244}
-  m_LocalRotation: {x: 0.000000081460335, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6302931715545943298}
@@ -3354,6 +3354,7 @@ GameObject:
   - component: {fileID: 2104711529501250222}
   - component: {fileID: 2104711529501250220}
   - component: {fileID: 2104711529501250221}
+  - component: {fileID: 701554582}
   m_Layer: 10
   m_Name: Player 1
   m_TagString: Untagged
@@ -3426,9 +3427,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 2.0294755
   m_Direction: 1
-  m_Center: {x: 0, y: 1.02, z: 0}
+  m_Center: {x: 0, y: 1.0052623, z: 0}
 --- !u!114 &2104711529501250220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3441,7 +3442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab2e5dfcd4461541aa719b77ae309e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
+  speed: 4
   jumpForce: 4
   gravity: 1
   groundLayer:
@@ -3464,6 +3465,23 @@ MonoBehaviour:
   timeCamera: {fileID: 4314435161664116842}
   holdPoint: {fileID: 797741530}
   useTimeCamera: 1
+--- !u!114 &701554582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410963690675871127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6697fbc83111654a8bd7822ecfad91d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepSounds:
+  - Footstep_1
+  - Footstep_2
+  - Footstep_3
+  - Footstep_4
 --- !u!1 &7413134933169056242
 GameObject:
   m_ObjectHideFlags: 0
@@ -3898,12 +3916,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 664ff95b8e93e9542952e002b00ea821, type: 3}
---- !u!4 &4314435161664116845 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4626204115013258031, guid: 664ff95b8e93e9542952e002b00ea821,
-    type: 3}
-  m_PrefabInstance: {fileID: 8929626280406618946}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4314435161664116844 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4626204115013258030, guid: 664ff95b8e93e9542952e002b00ea821,
@@ -3922,3 +3934,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92601bc228e5e744fb97b2471f8d7115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &4314435161664116845 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4626204115013258031, guid: 664ff95b8e93e9542952e002b00ea821,
+    type: 3}
+  m_PrefabInstance: {fileID: 8929626280406618946}
+  m_PrefabAsset: {fileID: 0}

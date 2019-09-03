@@ -6,11 +6,12 @@ public class PickUp : Interactable
 {
     //public Transform HoldItem;
 
-    public bool isHolding = false;
+    private bool isHolding = false;
 
     private Rigidbody rb;
     private Collider collider;
     private Player interactor;
+    private Color previousColor;
 
     private void Start()
     {
@@ -27,8 +28,10 @@ public class PickUp : Interactable
             isHolding = false;
             rb.useGravity = true;
             transform.parent = null;
-            interactor = null;
             collider.isTrigger = false;
+            interactor.IsHoldingItem = false;
+            interactor = null;
+            outlineColor = previousColor;
         }
     }
 
@@ -52,6 +55,11 @@ public class PickUp : Interactable
         rb.useGravity = false;
         collider.isTrigger = true;
         this.interactor = interactor;
-        transform.localPosition = new Vector3(0, 0, 0);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+        interactor.IsHoldingItem = true;
+        Unhighlight();
     }
 }

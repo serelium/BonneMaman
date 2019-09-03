@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +15,8 @@ public class Player : MonoBehaviour
     public Rigidbody RigidBody { get; private set; }
     public GameObject HeldObject => HoldPoint.childCount > 0 ? HoldPoint.GetChild(0).gameObject : null;
 
-    public bool IsHoldingItem { get; private set; }
+    public bool IsHoldingItem { get; set; }
+    public bool IsExamining { get; private set; }
     public bool TimeCameraActive => TimeCamera.Active;
     public bool CanInteract { get; set; }
     public bool CanSwitchDimenstion { get; private set; }
@@ -38,8 +40,45 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleTimeCameraInput();
-        HandleInteraction();
+        if (!IsExamining)
+        {
+            HandleInteraction();
+            HandleTimeCameraInput();
+        }
+
+        if(IsHoldingItem)
+        {
+            HandleInpsecting();
+        }
+    }
+
+    private void HandleInpsecting()
+    {
+        Examine examineObject = HeldObject.GetComponent<Examine>();
+
+        if (!examineObject)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (!IsExamining)
+            {
+                IsExamining = true;
+                examineObject.StartExamining();
+
+                // Disable movment and camera control during examination of object
+                GetComponent<PlayerMovement>().enabled = false;
+                Camera.main.GetComponent<PlayerLook>().enabled = false;
+            }
+
+            else
+            {
+                IsExamining = false;
+                examineObject.StopExamining();
+                GetComponent<PlayerMovement>().enabled = true;
+                Camera.main.GetComponent<PlayerLook>().enabled = true;
+            }
+        }
     }
 
     private void HandleTimeCameraInput()

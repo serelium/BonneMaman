@@ -37,6 +37,11 @@ public class PlayerMovement : MonoBehaviour
         Jump();
     }
 
+    private void OnDisable()
+    {
+        animator?.SetFloat("Speed", 0);
+    }
+
     private void PlayerMove()
     {
         //Grabs the user's input on the vertical axis and horizontal axis.
@@ -55,8 +60,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        animator?.SetFloat("Speed", playerMovement.magnitude);
         transform.Translate(playerMovement);
+        animator?.SetFloat("Speed", playerMovement.magnitude);
     }
 
     private void Jump()
