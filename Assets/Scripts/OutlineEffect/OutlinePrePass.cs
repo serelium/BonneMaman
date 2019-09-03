@@ -12,7 +12,7 @@ public class OutlinePrePass : MonoBehaviour
 	void OnEnable()
 	{
         outlinePass = new RenderTexture(Screen.width, Screen.height, 24); // Outline texture pass
-		outlinePass.antiAliasing = QualitySettings.antiAliasing;
+		//outlinePass.antiAliasing = QualitySettings.antiAliasing;
 		blurredPass = new RenderTexture(Screen.width, Screen.height, 0); // Blur texture pass (blur of outline pass)
 
         Camera camera = GetComponent<Camera>();
