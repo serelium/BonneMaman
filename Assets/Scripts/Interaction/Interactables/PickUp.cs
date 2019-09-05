@@ -1,37 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class PickUp : Interactable
 {
-    //public Transform HoldItem;
+    // Types that the player will still able to interact with when holding an object
+    [SerializeField] private string[] _typeNamesThatCanInteract;
+    private List<Type> _typesThatCanInteract;
 
-    private bool isHolding = false;
+    private bool _isHolding = false;
 
-    private Rigidbody rb;
-    private Collider collider;
-    private Player interactor;
-    private Color previousColor;
+    private Rigidbody _rb;
+    private Collider[] _colliders;
+    private Player _interactor;
+    private Color _previousColor;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
+        _rb = GetComponent<Rigidbody>();
+        _colliders = GetComponents<Collider>();
+        _typesThatCanInteract = new List<Type>();
+
+        foreach (string typeName in _typeNamesThatCanInteract)
+        {
+            Type type = Assembly.GetExecutingAssembly().GetType(typeName);
+
+            if (type != null)
+                _typesThatCanInteract.Add(type);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isHolding && Input.GetKeyDown(KeyCode.E))
+        if (_isHolding && Input.GetKeyDown(KeyCode.E) && !_interactor.HasInteractableInRange)
         {
-            interactor.CanInteract = true;
-            isHolding = false;
-            rb.useGravity = true;
-            transform.parent = null;
-            collider.isTrigger = false;
-            interactor.IsHoldingItem = false;
-            interactor = null;
-            outlineColor = previousColor;
+            StartCoroutine(Drop());
         }
     }
 
@@ -49,17 +55,63 @@ public class PickUp : Interactable
     {
         yield return new WaitForEndOfFrame();
 
-        interactor.CanInteract = false;
-        isHolding = true;
+        _interactor = interactor;
+        _isHolding = true;
+        _previousColor = _outlineColor;
+
+        //_interactor.CanInteract = false;
+        RemoveInteractTypes();
+        AddInteractTypes();
+        _interactor.IsHoldingItem = true;
+
+        _rb.useGravity = false;
+        _rb.angularVelocity = Vector3.zero;
+        _rb.velocity = Vector3.zero;
+
+        foreach (Collider collider in _colliders)
+        {
+            collider.enabled = false;
+        }
+
         transform.parent = interactor.HoldPoint.transform;
-        rb.useGravity = false;
-        collider.isTrigger = true;
-        this.interactor = interactor;
+
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
-        rb.angularVelocity = Vector3.zero;
-        rb.velocity = Vector3.zero;
-        interactor.IsHoldingItem = true;
         Unhighlight();
+    }
+
+    private IEnumerator Drop()
+    {
+        _isHolding = false;
+        _rb.useGravity = true;
+        transform.parent = null;
+
+        foreach (Collider collider in _colliders)
+        {
+            collider.enabled = true;
+        }
+
+        _outlineColor = _previousColor;
+        _interactor.IsHoldingItem = false;
+
+        yield return new WaitForEndOfFrame();
+
+        //_interactor.CanInteract = true;
+        RemoveInteractTypes();
+        _interactor.CanInteractTypes.Add(typeof(Interactable));
+        _interactor = null;
+    }
+
+    private void AddInteractTypes()
+    {
+        foreach (Type type in _typesThatCanInteract)
+        {
+            _interactor.CanInteractTypes.Add(type);
+        }
+    }
+
+    private void RemoveInteractTypes()
+    {
+        _interactor.CanInteractTypes.Clear();
     }
 }

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Examine : MonoBehaviour
 {
-    private bool examining;
-    private Vector3 originalRotation;
+    [SerializeField] private float maxZoom = 5;
+    private bool _examining;
+    private Vector3 _originalRotation;
+    private Vector3 _originalPosition;
+    private float _zoom;
 
     // Start is called before the first frame update
     void Start()
@@ -15,7 +18,7 @@ public class Examine : MonoBehaviour
 
     private void Update()
     {
-        if (!examining)
+        if (!_examining)
             return;
 
         if (Input.GetKey(KeyCode.Mouse0))
@@ -29,21 +32,37 @@ public class Examine : MonoBehaviour
             transform.Rotate(Vector3.up, -rotX, Space.World);
             transform.Rotate(transform.right, rotY, Space.World);
         }
+
+        float zoom = Input.GetAxis("Mouse ScrollWheel");
+
+        if (zoom > 0 && _zoom <= 0 || zoom < 0 && _zoom >= maxZoom)
+            return;
+
+        _zoom -= zoom;
+
+        Vector3 dir = transform.position - Camera.main.transform.position;
+        transform.position += dir.normalized * zoom;
+
+        Debug.Log(zoom);
     }
 
     public void StartExamining()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        examining = true;
-        originalRotation = transform.eulerAngles;
+        _examining = true;
+        _originalRotation = transform.eulerAngles;
+        _originalPosition = transform.position;
+        _zoom = 0;
     }
 
     public void StopExamining()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        examining = false;
-        transform.eulerAngles = originalRotation;
+        _examining = false;
+        transform.eulerAngles = _originalRotation;
+        transform.position = _originalPosition;
+        _zoom = 0;
     }
 }

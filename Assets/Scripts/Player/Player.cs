@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -15,17 +16,23 @@ public class Player : MonoBehaviour
     public Rigidbody RigidBody { get; private set; }
     public GameObject HeldObject => HoldPoint.childCount > 0 ? HoldPoint.GetChild(0).gameObject : null;
 
+    public bool TimeCameraActive => TimeCamera.Active;
     public bool IsHoldingItem { get; set; }
     public bool IsExamining { get; private set; }
-    public bool TimeCameraActive => TimeCamera.Active;
     public bool CanInteract { get; set; }
     public bool CanSwitchDimenstion { get; private set; }
+    public bool HasInteractableInRange => currentInteractable;
+
+    public HashSet<Type> CanInteractTypes { get; private set; }
 
     private Interactable currentInteractable;
 
     private void Start()
     {
         CanInteract = true;
+        CanInteractTypes = new HashSet<Type>();
+        CanInteractTypes.Add(typeof(Interactable));
+
         RigidBody = GetComponent<Rigidbody>();
 
         if (TimeCamera)
@@ -139,7 +146,7 @@ public class Player : MonoBehaviour
             return;
 
         //Simply shoots out a raycast that's visible in the Scene view
-        Debug.DrawLine(Camera.main.transform.position, Camera.main.transform.forward * interactRayLength, Color.blue);
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward, Color.blue);
         RaycastHit hit;
 
         LayerMask layerMask = TimeCamera.CurrentLayerMask;
@@ -151,7 +158,7 @@ public class Player : MonoBehaviour
         {
             Interactable interactable = (Interactable)hit.collider.gameObject.GetComponent(typeof(Interactable));
 
-            if (interactable != null)
+            if (interactable != null && interactable.Active && CanInteractTypes.Any(t => interactable.GetType() == t || interactable.GetType().IsSubclassOf(t)))
             {
                 if (currentInteractable && currentInteractable != interactable)
                     currentInteractable.Unhighlight();
@@ -176,7 +183,7 @@ public class Player : MonoBehaviour
             currentInteractable = null;
         }
 
-        if (CanInteract && Input.GetKeyDown(KeyCode.E) && currentInteractable)
+        if (Input.GetKeyDown(KeyCode.E) && currentInteractable)
         {
             currentInteractable.Interact(this);
         }
