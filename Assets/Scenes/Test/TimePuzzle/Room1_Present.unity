@@ -1022,7 +1022,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineColor: {r: 1, g: 0, b: 0, a: 0}
-  isHolding: 0
 --- !u!65 &1157914716
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1574,7 +1573,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineColor: {r: 1, g: 0.9190924, b: 0, a: 0}
-  isHolding: 0
 --- !u!54 &1916802872
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1948,15 +1946,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Key
       objectReference: {fileID: 0}
-    - target: {fileID: 4878531045125248883, guid: 0394f50e855a68f458d08e7856101c3e,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8498116556699542880, guid: 0394f50e855a68f458d08e7856101c3e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.12
+      value: -8.63
       objectReference: {fileID: 0}
     - target: {fileID: 8498116556699542880, guid: 0394f50e855a68f458d08e7856101c3e,
         type: 3}
@@ -1966,7 +1959,7 @@ PrefabInstance:
     - target: {fileID: 8498116556699542880, guid: 0394f50e855a68f458d08e7856101c3e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.889
+      value: -5.11
       objectReference: {fileID: 0}
     - target: {fileID: 8498116556699542880, guid: 0394f50e855a68f458d08e7856101c3e,
         type: 3}
@@ -2084,26 +2077,6 @@ PrefabInstance:
     - target: {fileID: 61287897, guid: 43a4636d0debc4c4ca20dc5c09023ae2, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4469912993920959230, guid: 43a4636d0debc4c4ca20dc5c09023ae2,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 710547807558584741, guid: 43a4636d0debc4c4ca20dc5c09023ae2,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.000000081460335
-      objectReference: {fileID: 0}
-    - target: {fileID: 710547807558584741, guid: 43a4636d0debc4c4ca20dc5c09023ae2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 710547807558584741, guid: 43a4636d0debc4c4ca20dc5c09023ae2,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43a4636d0debc4c4ca20dc5c09023ae2, type: 3}

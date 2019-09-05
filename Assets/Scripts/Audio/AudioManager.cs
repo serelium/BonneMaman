@@ -34,6 +34,7 @@ public class AudioManager : MonoBehaviour
         }
 
         sound.Source = owner.AddComponent<AudioSource>();
+        sound.Source.hideFlags = HideFlags.HideInInspector;
         sound.Source.clip = sound.Clip;
         sound.Source.volume = sound.Volume;
         sound.Source.pitch = sound.Pitch;

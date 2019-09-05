@@ -5,12 +5,14 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    [SerializeField] private Color outlineColor;
+    [SerializeField] protected Color _outlineColor;
+
+    public bool Active { get; set; } = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -24,7 +26,7 @@ public abstract class Interactable : MonoBehaviour
     public void Highlight()
     {
         Material mat = GetComponent<MeshRenderer>().material;
-        mat.SetColor("_OutlineColor", outlineColor);
+        mat.SetColor("_OutlineColor", _outlineColor);
     }
 
     public void Unhighlight()

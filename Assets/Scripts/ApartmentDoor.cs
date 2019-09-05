@@ -4,28 +4,35 @@ using UnityEngine;
 
 public class ApartmentDoor : Interactable
 {
-    enum DoorState {Open, Animating, Closed};
-    
+    // I'm no longer using these states since I won't be animating the door anymore, but
+    // I'll keep and change the enums in order to change between locked and unlocked states 
+    enum DoorState {Locked, Unlocked};
 
-    //Public members
-    public float                swingAngle      = 60.0f;
-    public float                Duration        = .50f;
-    public AnimationCurve       SwingCurve      = new AnimationCurve();
 
+    //Visible members
+    [SerializeField] private GameObject _requiredToOpen; // Object required to unlock the door
+    [SerializeField] private float yRotation = 1f;
+    [SerializeField] private float swingAngle = 60.0f;
+    [SerializeField] private float Duration = .50f;
 
     //Privte members
-    private Player              interactor;
+    private Player              _interactor;
     private Transform           _transform      = null;
-    
-    private Vector3             _openRot        = Vector3.zero;
-    private Vector3             _closedRot      = Vector3.zero;
-    private DoorState           _doorState      = DoorState.Closed;
+    private DoorState           _doorState      = DoorState.Locked;
     private Rigidbody           _rigidbody;
     private Collider            _collider;
+    private HingeJoint          _hingeJoint;
+    private JointSpring         _hingeSpring; 
 
     public override void Interact(Player interactor)
     {
-        
+        // Unfreeze position and rotation of door when the player interacts with it having the right object to open it
+        if (FindObjectOfType<Player>().HeldObject == _requiredToOpen)
+        {
+            _doorState = DoorState.Unlocked;
+            _rigidbody.constraints = RigidbodyConstraints.None;
+            Active = false; // Disable future interaction
+        }
     }
 
     // Start is called before the first frame update
@@ -33,57 +40,35 @@ public class ApartmentDoor : Interactable
     {
         // Cached values for transform, original position, rigidbody, and collider
         _transform  = transform;
-        _closedRot  = _transform.eulerAngles; 
         _rigidbody  = GetComponent<Rigidbody>();
         _collider   = GetComponent<Collider>();  
-        
-        _openRot = _closedRot + (_transform.eulerAngles * swingAngle);
+
+        // hinge values
+        _hingeJoint = GetComponent<HingeJoint>();
+        _hingeSpring = _hingeJoint.spring;
+
+        if (_requiredToOpen)
+            _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+        else
+            _doorState = DoorState.Unlocked;
     }
     
     
-    
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.E)){
-
-            StartCoroutine(AnimateDoor((_doorState == DoorState.Open) ? DoorState.Closed : DoorState.Open));
-        }
+        //_hingeJoint.spring. = 50f;
     }
 
-    IEnumerator AnimateDoor( DoorState newstate){
-        _doorState = DoorState.Animating;
+    /// <summary>
+    /// OnTriggerExit is called when the Collider other has stopped touching the trigger.
+    /// </summary>
+    /// <param name="other">The other Collider involved in this collision.</param>
+    void OnTriggerExit(Collider other)
+    {
         float time = 0.0f;
-
-        Vector3 startPos = (newstate == DoorState.Open) ? _closedRot:_openRot;
-        Vector3 endPos   = (newstate == DoorState.Open) ? _closedRot : _openRot;
-
-        while (time <= Duration) 
-        {
-            // Calculate normalized time and evaluate the result on our animation curve.
-            // The result of the curve evaluation is then used as the t value in the
-            // Vector Lerp between the start and ending positions
-            float t = time/Duration;
-
-            //! testing smoothly tilt a transform toward a target rotation for Z and X
-            float tiltAroundZ = Input.GetAxis("Horizontal") * swingAngle;
-            float tiltAroundX = Input.GetAxis("Vertical") * swingAngle;
-
-            // Rotate the cube by converting the angles into a quaternion.
-            Quaternion target = Quaternion.Euler(0, tiltAroundZ, 0);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, target, SwingCurve.Evaluate(t));
-            
-
-            //Accumulate time and yield until the next frame
-            time += Time.deltaTime;
-            yield return null;
-        }
-        
-        // Snap object to the end position (just to make sure)
-        _transform.eulerAngles = endPos;
-
-        //Assign new state to the door
-        _doorState = newstate;
+        float t = time / Duration;
+        Quaternion target = Quaternion.Euler(90, 0, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, Duration);
+        time += Time.deltaTime;
     }
-
 }
