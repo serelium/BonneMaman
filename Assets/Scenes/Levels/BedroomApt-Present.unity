@@ -619,8 +619,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 149.15643, y: 32.10162, z: 275.78546}
-  m_Center: {x: 90.80131, y: 18.672293, z: 10.619831}
+  m_Size: {x: 138.8932, y: 24.372095, z: 243.12262}
+  m_Center: {x: 85.66969, y: 7.3653464, z: 6.493306}
 --- !u!59 &1751392059
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -629,10 +629,10 @@ HingeJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751392053}
   m_ConnectedBody: {fileID: 0}
-  m_Anchor: {x: 17.4, y: 23.71, z: 0}
+  m_Anchor: {x: -3.8, y: 9.17, z: 0}
   m_Axis: {x: 1, y: 0, z: 90}
   m_AutoConfigureConnectedAnchor: 0
-  m_ConnectedAnchor: {x: -4.5394664, y: 1.492702, z: 8.5771}
+  m_ConnectedAnchor: {x: -4.7514663, y: 1.492702, z: 8.4317}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -646,7 +646,7 @@ HingeJoint:
   m_UseLimits: 0
   m_Limits:
     min: 0
-    max: 0
+    max: 180
     bounciness: 0
     bounceMinVelocity: 0.2
     contactDistance: 0

@@ -20,7 +20,8 @@ public class ApartmentDoor : Interactable
     private DoorState           _doorState      = DoorState.Unlocked;
     private Rigidbody           _rigidbody;
     private Collider            _collider;
-
+    private HingeJoint          _hingeJoint;
+    private JointSpring         _hingeSpring; 
     public override void Interact(Player interactor)
     {
         
@@ -38,12 +39,16 @@ public class ApartmentDoor : Interactable
         _transform  = transform;
         _rigidbody  = GetComponent<Rigidbody>();
         _collider   = GetComponent<Collider>();  
+
+        // hinge values
+        _hingeJoint = GetComponent<HingeJoint>();
+        _hingeSpring = _hingeJoint.spring;
     }
     
     
     void OnTriggerEnter(Collider other)
     {
-
+        //_hingeJoint.spring. = 50f; 
     }
 
     /// <summary>
@@ -52,6 +57,7 @@ public class ApartmentDoor : Interactable
     /// <param name="other">The other Collider involved in this collision.</param>
     void OnTriggerExit(Collider other)
     {
+        
         float time = 0.0f;
         float t = time / Duration;
         Quaternion target = Quaternion.Euler(90, 0, 0);
