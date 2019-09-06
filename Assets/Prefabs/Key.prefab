@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2159765974710114666}
   - component: {fileID: 2159765974710114660}
   - component: {fileID: 1761031893}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6de9226ffee4d094f9465672ac0d5368, type: 2}
+  - {fileID: 2100000, guid: 9d116a565cdc2af4f9c96826ba8a1e0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,8 +123,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.36326918, y: 0.3765151, z: 0.2509534}
-  m_Center: {x: -0.01044333, y: 0.010347089, z: 0.010077953}
+  m_Size: {x: 0.62240994, y: 0.6876891, z: 0.2509534}
+  m_Center: {x: -0.018968284, y: 0.058349162, z: 0.010077953}
 --- !u!114 &2159765974710114660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,7 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a963735c9acd99844a6359f41e24c6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 0, g: 1, b: 0.19833946, a: 0}
+  _outlineColor: {r: 1, g: 1, b: 0, a: 0}
+  _typeNamesThatCanInteract:
+  - ApartmentDoor
 --- !u!114 &1761031893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,3 +152,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e14bcb06ed3165147ba8068b65ec4a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxZoom: 0.7

@@ -7,19 +7,23 @@ using UnityEngine.UI;
 
 public class TimeCamera : MonoBehaviour
 {
-    [Header("Time Cameras")]
-    [SerializeField] private Camera displayCamera;
-    [SerializeField] private Camera presentCamera;
-    [SerializeField] private Camera pastCamera;
-    [SerializeField] private Camera futureCamera;
+    [Header("Cameras")]
+    [SerializeField] private Camera _displayCamera;
+    [SerializeField] private Camera _OutlineCamera;
+    [SerializeField] private Camera _presentCamera;
+    [SerializeField] private Camera _pastCamera;
+    [SerializeField] private Camera _futureCamera;
 
     [Header("Time Camera 3D Models")]
-    [SerializeField] private GameObject cameraModel;
-    [SerializeField] private GameObject timelineSwitch;
+    [SerializeField] private GameObject _cameraModel;
+    [SerializeField] private GameObject _timelineSwitch;
 
     [Header("UI")]
-    [SerializeField] private Image camFlashImage;
-    [SerializeField] private TextMesh selectedTimelineText;
+    [SerializeField] private Image _camFlashImage;
+    [SerializeField] private TextMesh _selectedTimelineText;
+
+    [Header("Others")]
+    [SerializeField] private List<GameObject> _objectsToSwitchDimensions;
 
     private Dictionary<CameraType, Camera> cameras;
     private CameraType currentCameraType;
@@ -27,7 +31,7 @@ public class TimeCamera : MonoBehaviour
     private AudioSource recAudioSource;
 
     public bool Active { get; set; }
-    public LayerMask CurrentLayerMask => displayCamera.cullingMask;
+    public LayerMask CurrentLayerMask => _displayCamera.cullingMask;
     public int CurrentLayer => LayerMask.NameToLayer(currentCameraType.ToString());
 
     public delegate void ChangingDimensionEvent();
@@ -38,27 +42,28 @@ public class TimeCamera : MonoBehaviour
 
     private void Awake()
     {
-        presentCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        pastCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        futureCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+        _presentCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+        _pastCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+        _futureCamera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
 
         cameras = new Dictionary<CameraType, Camera>();
         activeLenses = new Dictionary<CameraType, bool>();
 
-        cameras.Add(CameraType.Present, presentCamera);
-        cameras.Add(CameraType.Past, pastCamera);
-        cameras.Add(CameraType.Future, futureCamera);
+        cameras.Add(CameraType.Present, _presentCamera);
+        cameras.Add(CameraType.Past, _pastCamera);
+        cameras.Add(CameraType.Future, _futureCamera);
 
         activeLenses.Add(CameraType.Present, true);
         activeLenses.Add(CameraType.Past, true);
         activeLenses.Add(CameraType.Future, true);
 
         currentCameraType = CameraType.Present;
-        Shader.SetGlobalTexture("_TimeView", presentCamera.targetTexture);
-        displayCamera.cullingMask = LayerMask.GetMask(currentCameraType.ToString());
+        Shader.SetGlobalTexture("_TimeView", _presentCamera.targetTexture);
+        _displayCamera.cullingMask = LayerMask.GetMask(currentCameraType.ToString());
+        _OutlineCamera.cullingMask = LayerMask.GetMask(currentCameraType.ToString());
 
         Active = false;
-        cameraModel.SetActive(false);
+        _cameraModel.SetActive(false);
 
         recAudioSource = GetComponent<AudioSource>();
         recAudioSource.loop = true;
@@ -87,7 +92,7 @@ public class TimeCamera : MonoBehaviour
             recAudioSource.Stop();
 
         Active = active;
-        cameraModel.SetActive(active);
+        _cameraModel.SetActive(active);
     }
 
     public void SetZoom(bool zoom)
@@ -96,7 +101,7 @@ public class TimeCamera : MonoBehaviour
             return;
 
         Vector3 translation = zoom ? new Vector3(0, 0, 0.02f) : new Vector3(0, 0, -0.02f);
-        cameraModel.transform.localPosition += translation;
+        _cameraModel.transform.localPosition += translation;
     }
 
     public void SwapCamera(CameraType cameraType)
@@ -105,16 +110,16 @@ public class TimeCamera : MonoBehaviour
             return;
 
         currentCameraType = cameraType;
-        selectedTimelineText.text = currentCameraType.ToString();
+        _selectedTimelineText.text = currentCameraType.ToString();
 
         if (currentCameraType == CameraType.Present)
-            selectedTimelineText.color = Color.green;
+            _selectedTimelineText.color = Color.green;
 
         else if (currentCameraType == CameraType.Past)
-            selectedTimelineText.color = Color.yellow;
+            _selectedTimelineText.color = Color.yellow;
 
         else if (currentCameraType == CameraType.Future)
-            selectedTimelineText.color = Color.red;
+            _selectedTimelineText.color = Color.red;
 
         StartCoroutine(TurnSwitch());
         Shader.SetGlobalTexture("_TimeView", cameras[currentCameraType].targetTexture);
@@ -127,17 +132,24 @@ public class TimeCamera : MonoBehaviour
 
         int layerMask = LayerMask.GetMask(currentCameraType.ToString());
 
-        if (displayCamera.cullingMask == layerMask)
+        if (_displayCamera.cullingMask == layerMask)
             return;
 
         ChangingDimension?.Invoke();
         StartCoroutine(FlashCamera());
 
-        displayCamera.cullingMask = layerMask;
+        _displayCamera.cullingMask = layerMask;
+        _OutlineCamera.cullingMask = layerMask;
         int layer = LayerMask.NameToLayer(currentCameraType.ToString());
         gameObject.layer = layer;
 
         LayerUtils.SetChildLayerRecursivly(transform, layer);
+
+        foreach(GameObject obj in _objectsToSwitchDimensions)
+        {
+            obj.layer = layer;
+            LayerUtils.SetChildLayerRecursivly(obj.transform, layer);
+        }
 
         SetActive(false, false);
     }
@@ -150,14 +162,14 @@ public class TimeCamera : MonoBehaviour
     private IEnumerator FlashCamera()
     {
         AudioManager.Instance.Play(gameObject, "Camera_Flash");
-        camFlashImage.color = Color.white;
+        _camFlashImage.color = Color.white;
 
         yield return new WaitForSeconds(1);
 
         float duration = 1.5f;
         float time = 0;
 
-        Color startCol = camFlashImage.color;
+        Color startCol = _camFlashImage.color;
         Color endCol = new Color(1, 1, 1, 0);
 
         while (time < duration)
@@ -165,7 +177,7 @@ public class TimeCamera : MonoBehaviour
             time += Time.deltaTime;
 
             Color newCol = Color.Lerp(startCol, endCol, time / duration);
-            camFlashImage.color = newCol;
+            _camFlashImage.color = newCol;
 
             yield return null;
         }
@@ -179,15 +191,15 @@ public class TimeCamera : MonoBehaviour
         float duration = 0.3f;
         float time = 0;
 
-        Vector3 startRot = timelineSwitch.transform.localEulerAngles;
-        Vector3 endRot = timelineSwitch.transform.localEulerAngles + new Vector3(0, 90, 0);
+        Vector3 startRot = _timelineSwitch.transform.localEulerAngles;
+        Vector3 endRot = _timelineSwitch.transform.localEulerAngles + new Vector3(0, 90, 0);
 
         while (time < duration)
         {
             time += Time.deltaTime;
 
             Quaternion newRot = Quaternion.Lerp(Quaternion.Euler(startRot), Quaternion.Euler(endRot), time / duration);
-            timelineSwitch.transform.localRotation = newRot;
+            _timelineSwitch.transform.localRotation = newRot;
 
             yield return null;
         }
