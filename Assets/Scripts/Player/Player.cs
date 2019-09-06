@@ -55,11 +55,11 @@ public class Player : MonoBehaviour
 
         if(IsHoldingItem)
         {
-            HandleInpsecting();
+            HandleExamining();
         }
     }
 
-    private void HandleInpsecting()
+    private void HandleExamining()
     {
         Examine examineObject = HeldObject.GetComponent<Examine>();
 

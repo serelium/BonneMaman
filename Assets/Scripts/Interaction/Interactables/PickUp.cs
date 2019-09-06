@@ -35,7 +35,7 @@ public class PickUp : Interactable
     // Update is called once per frame
     void Update()
     {
-        if (_isHolding && Input.GetKeyDown(KeyCode.E) && !_interactor.HasInteractableInRange)
+        if (_isHolding && Input.GetKeyDown(KeyCode.E) && !_interactor.HasInteractableInRange && !_interactor.IsExamining)
         {
             StartCoroutine(Drop());
         }
