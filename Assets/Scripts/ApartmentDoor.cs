@@ -4,25 +4,31 @@ using UnityEngine;
 
 public class ApartmentDoor : Interactable
 {
-    // I'm no longer using these states since I won't be animating the door anymore, but
-    // I'll keep and change the enums in order to change between locked and unlocked states 
+    //e: enum states to switch between when player has required obj
     enum DoorState {Locked, Unlocked};
 
 
     //Visible members
-    [SerializeField] private GameObject _requiredToOpen; // Object required to unlock the door
-    [SerializeField] private float yRotation = 1f;
-    [SerializeField] private float swingAngle = 60.0f;
-    [SerializeField] private float Duration = .50f;
+    [SerializeField] 
+    private GameObject  _requiredToOpen; // Object required to unlock the door
+    [SerializeField] 
+    private float       _yRotation      = 1f;
+    [SerializeField] 
+    private float       _swingAngle     = 60.0f;
+    [SerializeField] 
+    private float       _Duration       = .50f;
 
     //Privte members
-    private Player              _interactor;
-    private Transform           _transform      = null;
-    private DoorState           _doorState      = DoorState.Locked;
-    private Rigidbody           _rigidbody;
-    private Collider            _collider;
-    private HingeJoint          _hingeJoint;
-    private JointSpring         _hingeSpring; 
+    private Player      _interactor;
+    private Transform   _transform      = null;
+    private DoorState   _doorState      = DoorState.Locked;
+    private Rigidbody   _rigidbody;
+    private Collider    _collider;
+    // hinge members
+    private HingeJoint  _hingeJoint;
+    private JointSpring _hingeSpring;
+    // player : door bool
+    private bool        _holdingDoor;
 
     public override void Interact(Player interactor)
     {
@@ -48,7 +54,8 @@ public class ApartmentDoor : Interactable
         _hingeSpring = _hingeJoint.spring;
 
         if (_requiredToOpen)
-            _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            // door is locked
+            _rigidbody.constraints = RigidbodyConstraints.FreezeAll;  
         else
             _doorState = DoorState.Unlocked;
     }
@@ -56,19 +63,41 @@ public class ApartmentDoor : Interactable
     
     void OnTriggerEnter(Collider other)
     {
-        //_hingeJoint.spring. = 50f;
+        // attempt to force extra control for the player while they're inside the collider
+        // trigger
+        Cursor.visible = true;
+
+        float rotX = Input.GetAxis("Mouse X") * 200 * Mathf.Deg2Rad;
+        float rotY = Input.GetAxis("Mouse Y") * 200 * Mathf.Deg2Rad;
+
+        transform.Rotate(Vector3.up, -rotX, Space.World);
+        transform.Rotate(transform.right, rotY, Space.World);
     }
 
-    /// <summary>
-    /// OnTriggerExit is called when the Collider other has stopped touching the trigger.
-    /// </summary>
-    /// <param name="other">The other Collider involved in this collision.</param>
-    void OnTriggerExit(Collider other)
-    {
-        float time = 0.0f;
-        float t = time / Duration;
-        Quaternion target = Quaternion.Euler(90, 0, 0);
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, Duration);
-        time += Time.deltaTime;
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.E)){   
+            StartCoroutine(Grab());
+        }
     }
+
+    // void OnTriggerExit(Collider other)
+    // {
+    //     float time = 0.0f;
+    //     float t = time / _Duration;
+    //     Quaternion target = Quaternion.Euler(90, 0, 0);
+    //     transform.rotation = Quaternion.Slerp(transform.rotation, target, _Duration);
+    //     time += Time.deltaTime;
+    // }
+
+    private IEnumerator Grab(){
+        _holdingDoor = true;
+        yield return null;
+     }
+    
+    // private IEnumerator StopGrab(){
+    //     _holdingDoor = false;
+
+    // }
+
+
 }
